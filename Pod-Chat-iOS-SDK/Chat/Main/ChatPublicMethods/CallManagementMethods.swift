@@ -26,7 +26,7 @@ extension Chat {
         callRequestCallbackToUser = completion
         
         let chatMessage = SendChatMessageVO(chatMessageVOType:  ChatMessageVOTypes.CALL_REQUEST.intValue(),
-                                            content:            String(describing: callRequestInput.convertContentToJSON),
+                                            content:            "\(callRequestInput.convertContentToJSON())",
                                             messageType:        nil,
                                             metadata:           nil,
                                             repliedTo:          nil,
@@ -64,7 +64,7 @@ extension Chat {
         callAcceptCallbackToUser = completion
         
         let chatMessage = SendChatMessageVO(chatMessageVOType:  ChatMessageVOTypes.ACCEPT_CALL.intValue(),
-                                            content:            String(describing: callAcceptInput.convertContentToJSON),
+                                            content:            "\(callAcceptInput.convertContentToJSON())",
                                             messageType:        nil,
                                             metadata:           nil,
                                             repliedTo:          nil,
@@ -97,7 +97,7 @@ extension Chat {
         log.verbose("Try to request to RejectCall with this parameters: \n \(callRejectInput.convertContentToJSON())", context: "Chat")
         
         let chatMessage = SendChatMessageVO(chatMessageVOType:  ChatMessageVOTypes.REJECT_CALL.intValue(),
-                                            content:            String(describing: callRejectInput.convertContentToJSON),
+                                            content:            "\(callRejectInput.convertContentToJSON())",
                                             messageType:        nil,
                                             metadata:           nil,
                                             repliedTo:          nil,

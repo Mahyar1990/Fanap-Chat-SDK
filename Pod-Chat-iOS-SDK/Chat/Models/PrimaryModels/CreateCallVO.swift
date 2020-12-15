@@ -35,7 +35,7 @@ open class CreateCallVO {
         
         self.threadId   = messageContent["threadId"].int
         self.callId     = messageContent["callId"].int
-        self.isGroup    = messageContent["isGroup"].bool
+        self.isGroup    = messageContent["group"].bool
         
     }
     
