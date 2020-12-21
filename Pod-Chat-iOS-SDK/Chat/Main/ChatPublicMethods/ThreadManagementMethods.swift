@@ -17,6 +17,60 @@ import UIKit
 extension Chat {
     
     
+    // MARK: - Close Thread
+    /// closeThread:
+    /// close a thread by Admin (only)
+    ///
+    /// By calling this function, a request of type 102 (CLOSE_THREAD) will send throut Chat-SDK,
+    /// then the response will come back as callbacks to client whose calls this function.
+    ///
+    /// Inputs:
+    /// - you have to send your parameters as "CreateThreadRequest" to this function
+    ///
+    /// Outputs:
+    /// - It has 3 callbacks as responses
+    ///
+    /// - parameter inputModel: (input) you have to send your parameters insid this model. (CloseThreadRequest)
+    /// - parameter uniqueId:   (response) it will returns the request 'UniqueId' that will send to server. (String)
+    /// - parameter completion: (response) it will returns the response that comes from server to this request. (Any as! ThreadModel)
+    public func closeThread(inputModel closeThreadInput: CloseThreadRequest,
+                            uniqueId:       @escaping (String) -> (),
+                            completion:     @escaping callbackTypeAlias) {
+
+        log.verbose("Try to request to create thread participants with this parameters: \n \(closeThreadInput)", context: "Chat")
+        uniqueId(closeThreadInput.uniqueId)
+
+        closeThreadCallbackToUser = completion
+
+        let chatMessage = SendChatMessageVO(chatMessageVOType:  ChatMessageVOTypes.CLOSE_THREAD.intValue(),
+                                            content:            nil,
+                                            messageType:        nil,
+                                            metadata:           nil,
+                                            repliedTo:          nil,
+                                            systemMetadata:     nil,
+                                            subjectId:          closeThreadInput.threadId,
+                                            token:              token,
+                                            tokenIssuer:        nil,
+                                            typeCode:           closeThreadInput.typeCode ?? generalTypeCode,
+                                            uniqueId:           closeThreadInput.uniqueId,
+                                            uniqueIds:          nil,
+                                            isCreateThreadAndSendMessage: nil)
+
+        let asyncMessage = SendAsyncMessageVO(content:      chatMessage.convertModelToString(),
+                                              msgTTL:       msgTTL,
+                                              peerName:     serverName,
+                                              priority:     msgPriority,
+                                              pushMsgType:  nil)
+
+        sendMessageWithCallback(asyncMessageVO:     asyncMessage,
+                                callbacks:          [(CloseThreadCallbacks(), closeThreadInput.uniqueId)],
+                                sentCallback:       nil,
+                                deliverCallback:    nil,
+                                seenCallback:       nil)
+    }
+    
+    
+    
     // MARK: - Create Thread
     /// CreateThread:
     /// create a thread with somebody
@@ -561,6 +615,85 @@ extension Chat {
                                 sentCallback:       nil,
                                 deliverCallback:    nil,
                                 seenCallback:       nil)
+    }
+    
+    
+    /// LeaveThreadSaftly:
+    /// safe leave from a specific thread.
+    ///
+    /// By calling this function, a request of type 9 (LEAVE_THREAD) will send throut Chat-SDK,
+    /// then the response will come back as callbacks to client whose calls this function.
+    ///
+    /// Inputs:
+    /// - you have to send your parameters as "SafeLeaveThreadRequest" to this function
+    /// - we will check the userRole if he/she has the correct Role to add admin to the thread
+    ///
+    /// Outputs:
+    /// - It has 2 callbacks as responses
+    /// - if user has no adminRoles, we will return failed response as an event
+    ///
+    /// - parameter inputModel: (input) you have to send your parameters insid this model. (SafeLeaveThreadRequest)
+    /// - parameter uniqueId:   (response) it will returns the request 'UniqueId' that will send to server. (String)
+    /// - parameter completion: (response) it will returns the response that comes from server to this request. (Any as! ThreadModel)
+    public func leaveThreadSaftly(inputModel safeLeaveThreadInput:   SafeLeaveThreadRequest,
+                                  uniqueId:             @escaping (String) -> (),
+                                  addAdminCallback:     @escaping callbackTypeAlias,
+                                  leaveThreadCallback:  @escaping callbackTypeAlias) {
+        
+        log.verbose("Try to request to leave saftly from thread with this parameters: \n \(safeLeaveThreadInput)", context: "Chat")
+
+        let currentRolesInput = GetCurrentUserRolesRequest(threadId: safeLeaveThreadInput.threadId,
+                                                           typeCode: safeLeaveThreadInput.typeCode,
+                                                           uniqueId: nil)
+        getCurrentUserRoles(inputModel: currentRolesInput,
+                            getCacheResponse: false,
+                            uniqueId: { _ in },
+                            completion: { (currentUserRolesResponse) in
+            let userRolesResponse = currentUserRolesResponse as! GetCurrentUserRolesModel
+            var isAdmin = false
+            let roles = userRolesResponse.userRoles
+            for item in userRolesResponse.userRoles {
+                if (item == Roles.ADD_RULE_TO_USER) || (item == Roles.THREAD_ADMIN) {
+                    isAdmin = true
+                }
+            }
+            
+            if isAdmin {
+                
+                let setRoleModel = SetRemoveRoleModel(userId: safeLeaveThreadInput.participantId, roles: roles)
+                let adminInput = RoleRequestModel(userRoles: [setRoleModel],
+                                                  threadId: safeLeaveThreadInput.threadId,
+                                                  typeCode: nil,
+                                                  uniqueId: nil)
+                
+                self.setRole(inputModel: adminInput, uniqueId: { _ in }) { (setAdminResponse) in
+                    addAdminCallback(setAdminResponse)
+                    self.leaveThread(inputModel: safeLeaveThreadInput.convertToLeaveThreadRequest(),
+                                     uniqueId: { (leaveThreadUniqueId) in
+                        uniqueId(leaveThreadUniqueId)
+                    }) { (leaveThreadResponse) in
+                        leaveThreadCallback(leaveThreadResponse)
+                    }
+                }
+
+            } else {
+                let eventModel = ThreadEventModel(type:         ThreadEventTypes.THREAD_LEAVE_SAFTLY_FAILED,
+                                                  participants: nil,
+                                                  threads:      nil,
+                                                  threadId:     safeLeaveThreadInput.threadId,
+                                                  senderId:     nil,
+                                                  unreadCount:  nil,
+                                                  pinMessage:   nil)
+                self.delegate?.threadEvents(model: eventModel)
+                let leaveThreadModel = ThreadResponse(messageContent:   JSON(),
+                                                      hasError:         true,
+                                                      errorMessage:     "Current User have no Permission to Change the ThreadAdmin",
+                                                      errorCode:        6666)
+                leaveThreadCallback(leaveThreadModel)
+            }
+                                
+        }) { _ in }
+        
     }
     
     

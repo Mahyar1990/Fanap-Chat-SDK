@@ -58,6 +58,10 @@ public enum ChatMessageVOTypes {
     case UNPIN_MESSAGE                      // 51
     case SET_PROFILE                        // 52
     case GET_CURRENT_USER_ROLES             // 54
+    case GET_REPORT_REASONS                 // 56
+    case REPORT_THREAD                      // 57
+    case REPORT_USER                        // 58
+    case REPORT_MESSAGE                     // 59
     case CONTACTS_LAST_SEEN                 // 60
     case ALL_UNREAD_MESSAGE_COUNT           // 61
     case CREATE_BOT                         // 62
@@ -66,7 +70,8 @@ public enum ChatMessageVOTypes {
     case STOP_BOT                           // 65
     case CONTACT_SYNCED                     // 90
     case LOGOUT                             // 100
-    case STATUS_PING                        // 100
+    case STATUS_PING                        // 101
+    case CLOSE_THREAD                       // 102
     case ERROR                              // 999
     
     func intValue() -> Int {
@@ -119,6 +124,10 @@ public enum ChatMessageVOTypes {
         case .UNPIN_MESSAGE:                    return 51
         case .SET_PROFILE:                      return 52
         case .GET_CURRENT_USER_ROLES:           return 54
+        case .GET_REPORT_REASONS:               return 56
+        case .REPORT_THREAD:                    return 57
+        case .REPORT_USER:                      return 58
+        case .REPORT_MESSAGE:                   return 59
         case .CONTACTS_LAST_SEEN:               return 60
         case .ALL_UNREAD_MESSAGE_COUNT:         return 61
         case .CREATE_BOT:                       return 62
@@ -128,6 +137,7 @@ public enum ChatMessageVOTypes {
         case .CONTACT_SYNCED:                   return 90
         case .LOGOUT:                           return 100
         case .STATUS_PING:                      return 101
+        case .CLOSE_THREAD:                     return 102
         case .ERROR:                            return 999
         }
     }

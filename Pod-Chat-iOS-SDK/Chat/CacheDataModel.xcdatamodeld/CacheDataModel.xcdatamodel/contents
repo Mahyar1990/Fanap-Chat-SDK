@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14903" systemVersion="18G1012" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CMBlockedContact" representedClassName=".CMBlockedContact" syncable="YES">
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
@@ -25,6 +25,7 @@
         <attribute name="admin" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="canEditInfo" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="canSpam" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="closedThread" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="descriptions" optional="YES" attributeType="String"/>
         <attribute name="group" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
@@ -62,7 +63,7 @@
         <relationship name="pinMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMPinMessage" inverseName="message" inverseEntity="CMPinMessage"/>
     </entity>
     <entity name="CMCurrentUserRoles" representedClassName=".CMCurrentUserRoles" syncable="YES">
-        <attribute name="roles" optional="YES" attributeType="Transformable"/>
+        <attribute name="roles" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
         <attribute name="threadId" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
     </entity>
     <entity name="CMFile" representedClassName=".CMFile" syncable="YES">
@@ -142,7 +143,7 @@
         <attribute name="notSeenDuration" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
         <attribute name="online" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="receiveEnable" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
-        <attribute name="roles" optional="YES" attributeType="Transformable"/>
+        <attribute name="roles" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
         <attribute name="sendEnable" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="threadId" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
         <attribute name="time" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
@@ -194,7 +195,7 @@
     <entity name="CMUserRole" representedClassName=".CMUserRole" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="roles" optional="YES" attributeType="Transformable"/>
+        <attribute name="roles" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
         <attribute name="threadId" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
         <relationship name="conversation" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMConversation" inverseName="dummyUserRoles" inverseEntity="CMConversation"/>
     </entity>
@@ -229,6 +230,7 @@
         <attribute name="messageType" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="metadata" optional="YES" attributeType="String"/>
         <attribute name="mimeType" optional="YES" attributeType="String"/>
+        <attribute name="originalName" optional="YES" attributeType="String"/>
         <attribute name="repliedTo" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
         <attribute name="textMessage" optional="YES" attributeType="String"/>
         <attribute name="threadId" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
@@ -264,6 +266,7 @@
         <attribute name="fileSize" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
         <attribute name="isPublic" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="mimeType" optional="YES" attributeType="String"/>
+        <attribute name="originalName" optional="YES" attributeType="String"/>
         <attribute name="typeCode" optional="YES" attributeType="String"/>
         <attribute name="uniqueId" optional="YES" attributeType="String"/>
         <attribute name="userGroupHash" optional="YES" attributeType="String"/>
@@ -276,6 +279,7 @@
         <attribute name="hC" optional="YES" attributeType="Integer 64" usesScalarValueType="NO"/>
         <attribute name="isPublic" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="mimeType" optional="YES" attributeType="String"/>
+        <attribute name="originalName" optional="YES" attributeType="String"/>
         <attribute name="typeCode" optional="YES" attributeType="String"/>
         <attribute name="uniqueId" optional="YES" attributeType="String"/>
         <attribute name="userGroupHash" optional="YES" attributeType="String"/>
@@ -286,7 +290,7 @@
     <elements>
         <element name="CMBlockedContact" positionX="-461.90234375" positionY="-78.6953125" width="128" height="105"/>
         <element name="CMContact" positionX="-307.48828125" positionY="-144.9375" width="128" height="238"/>
-        <element name="CMConversation" positionX="30.32421875" positionY="-129.10546875" width="128" height="613"/>
+        <element name="CMConversation" positionX="30.32421875" positionY="-129.10546875" width="128" height="628"/>
         <element name="CMCurrentUserRoles" positionX="387" positionY="189" width="128" height="73"/>
         <element name="CMFile" positionX="-462.546875" positionY="425.40625" width="128" height="103"/>
         <element name="CMForwardInfo" positionX="432.46484375" positionY="513.06640625" width="128" height="103"/>
@@ -298,14 +302,14 @@
         <element name="CMReplyInfo" positionX="982.71484375" positionY="482.37890625" width="128" height="193"/>
         <element name="CMThreadParticipants" positionX="-459.9921875" positionY="520.90625" width="128" height="90"/>
         <element name="CMUser" positionX="-463.83984375" positionY="196.234375" width="128" height="238"/>
-        <element name="CMUserRole" positionX="471.12890625" positionY="272.80078125" width="128" height="120"/>
+        <element name="CMUserRole" positionX="471.12890625" positionY="272.80078125" width="128" height="118"/>
         <element name="MessageGaps" positionX="-459.22265625" positionY="620.73828125" width="128" height="90"/>
         <element name="PhoneContact" positionX="-459.39453125" positionY="-191.34765625" width="128" height="103"/>
         <element name="QueueOfEditMessages" positionX="1209.28125" positionY="-34.71875" width="128" height="163"/>
-        <element name="QueueOfFileMessages" positionX="1220.84375" positionY="275.875" width="128" height="313"/>
+        <element name="QueueOfFileMessages" positionX="1220.84375" positionY="275.875" width="128" height="328"/>
         <element name="QueueOfForwardMessages" positionX="1214.4296875" positionY="135.15234375" width="128" height="133"/>
         <element name="QueueOfTextMessages" positionX="1210.796875" positionY="-206.65625" width="128" height="163"/>
-        <element name="QueueOfUploadFiles" positionX="1079.53125" positionY="19.48046875" width="128" height="28"/>
-        <element name="QueueOfUploadImages" positionX="1076.33203125" positionY="-208.8203125" width="128" height="28"/>
+        <element name="QueueOfUploadFiles" positionX="1079.53125" positionY="19.48046875" width="128" height="193"/>
+        <element name="QueueOfUploadImages" positionX="1076.33203125" positionY="-208.8203125" width="128" height="253"/>
     </elements>
 </model>

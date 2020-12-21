@@ -474,9 +474,7 @@ extension Chat {
 //        lastSentMessageTimer = nil
 //        lastSentMessageTimer = RepeatingTimer(timeInterval: TimeInterval(self.chatPingMessageInterval))
         
-        if let _ = lstSntMsgTimer {
-            lstSntMsgTimer?.stop()
-        }
+        stopLastSentMessageTimer()
 //        lastSentMessageTime = Date()
         lastSentMessageTimer(interval: TimeInterval(self.chatPingMessageInterval))
     }
@@ -535,8 +533,8 @@ extension Chat {
             
 //        } else if (lastSentMessageTimer != nil) {
 //            lastSentMessageTimer?.suspend()
-        } else if let _ = lstSntMsgTimer {
-            lstSntMsgTimer!.stop()
+        } else {
+            stopLastSentMessageTimer()
         }
     }
     
@@ -914,6 +912,11 @@ extension Chat {
             responseOfStatusPing(withMessage: message)
             break
             
+        // a message of type 102 (CLOSE_THREAD) comes from Server.
+        case ChatMessageVOTypes.CLOSE_THREAD.intValue():
+            responseOfCloseThread(withMessage: message)
+            break
+            
         // a message of type 999 (ERROR) comes from Server.
         case ChatMessageVOTypes.ERROR.intValue():
             chatErrorHandler(withMessage: message, messageContentAsJSON: messageContentAsJSON)
@@ -929,10 +932,11 @@ extension Chat {
         log.verbose("Message of type 'ERROR' recieved", context: "Chat")
         
         // send log to Sentry 4.3.1
-        let event = Event(level: SentrySeverity.error)
-        event.message = "Message of type 'ERROR' recieved: \n \(message.returnToJSON())"
-        Client.shared?.send(event: event, completion: { _ in })
-        
+        if captureSentryLogs {
+            let event = Event(level: SentrySeverity.error)
+            event.message = "Message of type 'ERROR' recieved: \n \(message.returnToJSON())"
+            Client.shared?.send(event: event, completion: { _ in })
+        }
         
         // send log to Sentry 5.0.5
 //        let event = Event(level: SentryLevel.error)
@@ -965,10 +969,11 @@ extension Chat {
             }) { _ in }
             Chat.map.removeValue(forKey: message.uniqueId)
             
-            if (messageContentAsJSON["code"].intValue == 21) {
-                isChatReady = false
-                asyncClient?.asyncLogOut()
-            }
+            // ToDo: what to do when authenticationError comes
+//            if (messageContentAsJSON["code"].intValue == 21) {
+//                isChatReady = false
+//                asyncClient?.disposeAsyncObject()
+//            }
             delegate?.chatError(errorCode:      message.code    ?? messageContentAsJSON["code"].int         ?? 0,
                                 errorMessage:   message.message ?? messageContentAsJSON["message"].string   ?? "",
                                 errorResult:    messageContentAsJSON)
