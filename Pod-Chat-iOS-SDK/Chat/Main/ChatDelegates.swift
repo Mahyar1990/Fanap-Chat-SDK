@@ -27,9 +27,6 @@ public protocol ChatDelegates: class {
     func systemEvents(model: SystemEventModel)
     func threadEvents(model: ThreadEventModel)
     func userEvents(model: UserEventModel)
-    func callEvents(request70: JSON?,
-                    reject72: RejectCallResponse?,
-                    deliver73: DeliverCallResponse?,
-                    start74: CallStartResponse?)
+    func callEvents(model: CallEventModel)
     
 }

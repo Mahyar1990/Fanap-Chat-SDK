@@ -119,6 +119,13 @@
 		3E35336623D4502200731774 /* UnpinMessageCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35336523D4502200731774 /* UnpinMessageCallback.swift */; };
 		3E35336823D4548200731774 /* PinUnpinMessageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35336723D4548200731774 /* PinUnpinMessageResponse.swift */; };
 		3E35336A23D4560D00731774 /* PinUnpinMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35336923D4560D00731774 /* PinUnpinMessage.swift */; };
+		3E35AF3625A3748F0079178A /* HandleCallConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35AF3525A3748E0079178A /* HandleCallConnect.swift */; };
+		3E35AF4925A374B50079178A /* HandleCallReconnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35AF4825A374B50079178A /* HandleCallReconnect.swift */; };
+		3E35AF4E25A374FE0079178A /* CallEndedCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35AF4D25A374FE0079178A /* CallEndedCallback.swift */; };
+		3E35AF5125A375250079178A /* HandleCallEnded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35AF5025A375250079178A /* HandleCallEnded.swift */; };
+		3E35AF5625A375650079178A /* ConnectCallResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35AF5525A375650079178A /* ConnectCallResponse.swift */; };
+		3E35AF5B25A3788E0079178A /* CallEventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35AF5A25A3788E0079178A /* CallEventModel.swift */; };
+		3E35AF6025A378E80079178A /* CallEventTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35AF5F25A378E80079178A /* CallEventTypes.swift */; };
 		3E3D785223D5EFC0005797A4 /* GetContactNotSeenDurationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3D785123D5EFC0005797A4 /* GetContactNotSeenDurationRequest.swift */; };
 		3E3D785E23D5F12C005797A4 /* GetContactNotSeenDurationCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3D785D23D5F12C005797A4 /* GetContactNotSeenDurationCallback.swift */; };
 		3E3D786023D5F278005797A4 /* GetContactNotSeenDurationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3D785F23D5F278005797A4 /* GetContactNotSeenDurationResponse.swift */; };
@@ -595,6 +602,13 @@
 		3E35336523D4502200731774 /* UnpinMessageCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnpinMessageCallback.swift; sourceTree = "<group>"; };
 		3E35336723D4548200731774 /* PinUnpinMessageResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinUnpinMessageResponse.swift; sourceTree = "<group>"; };
 		3E35336923D4560D00731774 /* PinUnpinMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinUnpinMessage.swift; sourceTree = "<group>"; };
+		3E35AF3525A3748E0079178A /* HandleCallConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleCallConnect.swift; sourceTree = "<group>"; };
+		3E35AF4825A374B50079178A /* HandleCallReconnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleCallReconnect.swift; sourceTree = "<group>"; };
+		3E35AF4D25A374FE0079178A /* CallEndedCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallEndedCallback.swift; sourceTree = "<group>"; };
+		3E35AF5025A375250079178A /* HandleCallEnded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleCallEnded.swift; sourceTree = "<group>"; };
+		3E35AF5525A375650079178A /* ConnectCallResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectCallResponse.swift; sourceTree = "<group>"; };
+		3E35AF5A25A3788E0079178A /* CallEventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallEventModel.swift; sourceTree = "<group>"; };
+		3E35AF5F25A378E80079178A /* CallEventTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallEventTypes.swift; sourceTree = "<group>"; };
 		3E3D785123D5EFC0005797A4 /* GetContactNotSeenDurationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContactNotSeenDurationRequest.swift; sourceTree = "<group>"; };
 		3E3D785D23D5F12C005797A4 /* GetContactNotSeenDurationCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContactNotSeenDurationCallback.swift; sourceTree = "<group>"; };
 		3E3D785F23D5F278005797A4 /* GetContactNotSeenDurationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContactNotSeenDurationResponse.swift; sourceTree = "<group>"; };
@@ -904,6 +918,7 @@
 			children = (
 				3E8ADC7E23B3559000E3538D /* MessageEventTypes.swift */,
 				3E17D219244A4ABA009142F8 /* FileUploadEventTypes.swift */,
+				3E35AF5F25A378E80079178A /* CallEventTypes.swift */,
 				3E17D217244A4AAA009142F8 /* SystemEventTypes.swift */,
 				3E17D215244A4A97009142F8 /* BotEventTypes.swift */,
 				3E17D213244A4A78009142F8 /* ThreadEventTypes.swift */,
@@ -1115,6 +1130,7 @@
 				3E3315A823B208E00070A3D1 /* ContactEventModel.swift */,
 				3E3315AA23B221E90070A3D1 /* MessageEventModel.swift */,
 				3E3315AC23B22A3F0070A3D1 /* ThreadEventModel.swift */,
+				3E35AF5A25A3788E0079178A /* CallEventModel.swift */,
 			);
 			path = EventModels;
 			sourceTree = "<group>";
@@ -1600,6 +1616,7 @@
 			isa = PBXGroup;
 			children = (
 				3EFF4485256D0E00004C1056 /* CallStartResponse.swift */,
+				3E35AF5525A375650079178A /* ConnectCallResponse.swift */,
 				3EFF4489256D0E81004C1056 /* RejectCallResponse.swift */,
 				3EFF448C256D0EA4004C1056 /* DeliverCallResponse.swift */,
 				3EFF448F256D0EBC004C1056 /* CreateCallResponse.swift */,
@@ -1611,6 +1628,7 @@
 			isa = PBXGroup;
 			children = (
 				3EFF4495256D0F0E004C1056 /* CallRequestCallback.swift */,
+				3E35AF4D25A374FE0079178A /* CallEndedCallback.swift */,
 				3EFF4498256D0F96004C1056 /* CallAcceptedCallback.swift */,
 			);
 			path = CallResponses;
@@ -1621,6 +1639,9 @@
 			children = (
 				3EFF44C1256D10F6004C1056 /* HandleCallRejected.swift */,
 				3EFF44C4256D1166004C1056 /* HandleCallStarted.swift */,
+				3E35AF3525A3748E0079178A /* HandleCallConnect.swift */,
+				3E35AF5025A375250079178A /* HandleCallEnded.swift */,
+				3E35AF4825A374B50079178A /* HandleCallReconnect.swift */,
 				3EFF44C7256D1187004C1056 /* HandleCallDelivery.swift */,
 			);
 			path = HandleResponseMethods;
@@ -1884,6 +1905,7 @@
 				3E037C2422E2DB6E00094C80 /* MessageGaps+CoreDataProperties.swift in Sources */,
 				3EE0694A2212A3100099068F /* PhoneContact+CoreDataClass.swift in Sources */,
 				3E772115250CA3AB004328B5 /* StatusPingRequest.swift in Sources */,
+				3E35AF5B25A3788E0079178A /* CallEventModel.swift in Sources */,
 				3E581EA22418632B006EA0EF /* JoinPublicThreadRequest.swift in Sources */,
 				3EFF447D256D0D62004C1056 /* AcceptCallRequest.swift in Sources */,
 				3EB5205822ABEEB200B7EA45 /* ChatPrivateMethods.swift in Sources */,
@@ -1894,10 +1916,13 @@
 				3EE4D99923C085870030BB0D /* UploadRequest.swift in Sources */,
 				3E24085021F5C844001F32F1 /* CMContact+CoreDataClass.swift in Sources */,
 				3EBBEDF62174C6AF00F5CDC7 /* ThreadResponse.swift in Sources */,
+				3E35AF5125A375250079178A /* HandleCallEnded.swift in Sources */,
 				3E24083C21F5C844001F32F1 /* CMMessage+CoreDataClass.swift in Sources */,
 				3EB5206322ABF24900B7EA45 /* GetHistoryCallbacks.swift in Sources */,
+				3E35AF6025A378E80079178A /* CallEventTypes.swift in Sources */,
 				3E8D56DB21DBA83600B844DE /* MapSearchRequest.swift in Sources */,
 				3EB5205C22ABF0BC00B7EA45 /* GetContactsCallback.swift in Sources */,
+				3E35AF4E25A374FE0079178A /* CallEndedCallback.swift in Sources */,
 				3EBBEDDF2174C30800F5CDC7 /* Participant.swift in Sources */,
 				3E0AD6F0254E380A00BEEAE2 /* CloseThreadRequest.swift in Sources */,
 				3E35336823D4548200731774 /* PinUnpinMessageResponse.swift in Sources */,
@@ -1925,6 +1950,7 @@
 				3EA1568C21CE1BDC004B1346 /* MuteUnmuteThreadRequest.swift in Sources */,
 				3E437D5A218F36B80021C0ED /* BlockUnblockResponse.swift in Sources */,
 				3E400DA523EFE07C000DA873 /* UpdateChatProfileRequest.swift in Sources */,
+				3E35AF4925A374B50079178A /* HandleCallReconnect.swift in Sources */,
 				3E17D248244EFFB0009142F8 /* RequestModelDelegates.swift in Sources */,
 				3E3315A523B202E30070A3D1 /* SystemEventModel.swift in Sources */,
 				3EA1567E21CE1B49004B1346 /* GetBlockedListRequest.swift in Sources */,
@@ -1996,6 +2022,7 @@
 				3EE0694C2212A3100099068F /* PhoneContact+CoreDataProperties.swift in Sources */,
 				3EBBEDD92174C2A200F5CDC7 /* BlockedUser.swift in Sources */,
 				3EB5201B22ABC1AB00B7EA45 /* CMUserRole+CoreDataClass.swift in Sources */,
+				3E35AF3625A3748F0079178A /* HandleCallConnect.swift in Sources */,
 				3E1F31582453467300643EE6 /* StartBotCallback.swift in Sources */,
 				3E17D2672450AF53009142F8 /* ParticipantManagementMethods.swift in Sources */,
 				3E581EAE241864ED006EA0EF /* JoinPublicThreadCallbacks.swift in Sources */,
@@ -2007,6 +2034,7 @@
 				3EA1567821CE1AF0004B1346 /* UpdateContactsRequest.swift in Sources */,
 				3E3D786023D5F278005797A4 /* GetContactNotSeenDurationResponse.swift in Sources */,
 				3E8ADCF123B783CC00E3538D /* PinUnpinThreadRequest.swift in Sources */,
+				3E35AF5625A375650079178A /* ConnectCallResponse.swift in Sources */,
 				3EB8BC87242E8DE900BCBF7C /* CMCurrentUserRoles+CoreDataProperties.swift in Sources */,
 				3E0A76C222AFD6F8009D669E /* FileManagementMethods.swift in Sources */,
 				3E8D87E3221861920092B440 /* QueueOfFileMessages+CoreDataProperties.swift in Sources */,

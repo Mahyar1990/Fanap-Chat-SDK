@@ -54,7 +54,7 @@ extension Chat {
     
     
     
-    public func callAcceptRequest(inputModel callAcceptInput:   AcceptCallRequest,
+    public func acceptCallRequest(inputModel callAcceptInput:   AcceptCallRequest,
                                   uniqueId:     @escaping (String) -> (),
                                   completion:   @escaping callbackTypeAlias) {
         
@@ -92,7 +92,7 @@ extension Chat {
     
     
     
-    public func callRejectRequest(inputModel callRejectInput:   RejectCallRequest) {
+    public func rejectCallRequest(inputModel callRejectInput: RejectCallRequest) {
         
         log.verbose("Try to request to RejectCall with this parameters: \n \(callRejectInput.convertContentToJSON())", context: "Chat")
         
@@ -122,5 +122,45 @@ extension Chat {
                                 deliverCallback:    nil,
                                 seenCallback:       nil)
     }
+    
+    
+    
+    public func endCallRequest(inputModel   callEndInput:   EndCallRequest,
+                               uniqueId:    @escaping       (String) -> (),
+                               completion:  @escaping       callbackTypeAlias) {
+        
+        log.verbose("Try to request to EndCall with this parameters: \n \(callEndInput.convertContentToJSON())", context: "Chat")
+        
+        uniqueId(callEndInput.uniqueId)
+        callEndCallbackToUser = completion
+        
+        let chatMessage = SendChatMessageVO(chatMessageVOType:  ChatMessageVOTypes.END_CALL_REQUEST.intValue(),
+                                            content:            "\(callEndInput.convertContentToJSON())",
+                                            messageType:        nil,
+                                            metadata:           nil,
+                                            repliedTo:          nil,
+                                            systemMetadata:     nil,
+                                            subjectId:          nil,
+                                            token:              token,
+                                            tokenIssuer:        nil,
+                                            typeCode:           callEndInput.typeCode ?? generalTypeCode,
+                                            uniqueId:           callEndInput.uniqueId,
+                                            uniqueIds:          nil,
+                                            isCreateThreadAndSendMessage: nil)
+        
+        let asyncMessage = SendAsyncMessageVO(content:      chatMessage.convertModelToString(),
+                                              msgTTL:       msgTTL,
+                                              peerName:     serverName,
+                                              priority:     msgPriority,
+                                              pushMsgType:  nil)
+        
+        sendMessageWithCallback(asyncMessageVO:     asyncMessage,
+                                callbacks:          [(CallEndedCallback(), callEndInput.uniqueId)],
+                                sentCallback:       nil,
+                                deliverCallback:    nil,
+                                seenCallback:       nil)
+        
+    }
+    
     
 }

@@ -25,21 +25,41 @@ extension Chat {
                                           contentCount:     message.contentCount,
                                           subjectId:        message.subjectId)
         
-        // ToDo: send CallStarted Event
+        let res = CallStartResponse(messageContent: returnData.result!,
+                                    hasError:       returnData.hasError,
+                                    errorMessage:   returnData.errorMessage,
+                                    errorCode:      returnData.errorCode)
+        let model = CallEventModel(type:        CallEventTypes.CALL_START,
+                                   request:     nil,
+                                   deliver:     nil,
+                                   reject:      nil,
+                                   start:       res,
+                                   end:         nil,
+                                   connect:     nil,
+                                   reconnect:   nil)
+        Chat.sharedInstance.delegate?.callEvents(model: model)
         
         if Chat.map[message.uniqueId] != nil {
             let callback: CallbackProtocol = Chat.map[message.uniqueId]!
-            callback.onResultCallback(uID: message.uniqueId, response: returnData, success: { (successJSON) in
+            callback.onResultCallback(uID:      message.uniqueId,
+                                      response: returnData,
+                                      success:  { (successJSON) in
                 self.callAcceptCallbackToUser?(successJSON)
             }) { _ in }
             Chat.map.removeValue(forKey: message.uniqueId)
         } else if Chat.callMap[message.uniqueId] != nil {
             let callback: CallbackProtocol = Chat.callMap[message.uniqueId]!.first!
-            callback.onResultCallback(uID: message.uniqueId, response: returnData, success: { (successJSON) in
+            callback.onResultCallback(uID:      message.uniqueId,
+                                      response: returnData,
+                                      success:  { (successJSON) in
                 self.callRequestCallbackToUser?(successJSON)
             }) { _ in }
             Chat.callMap[message.uniqueId]?.removeAll()
             Chat.callMap.removeValue(forKey: message.uniqueId)
+//            Chat.callMap[message.uniqueId]?.removeFirst()
+//            if (Chat.callMap[message.uniqueId]!.count < 1) {
+//                Chat.callMap.removeValue(forKey: message.uniqueId)
+//            }
         }
         
     }

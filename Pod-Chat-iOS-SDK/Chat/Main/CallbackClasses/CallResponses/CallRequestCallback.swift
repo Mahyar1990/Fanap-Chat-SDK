@@ -30,12 +30,20 @@ extension Chat {
                                             contentCount:      message.contentCount,
                                             subjectId:         message.subjectId)
         
-        // ToDo: send CallRequest Event
         
-        delegate?.callEvents(request70: message.returnToJSON(),
-                             reject72:  nil,
-                             deliver73: nil,
-                             start74:   nil)
+        let res = CreateCallResponse(messageContent:    returnedData.result!,
+                                     hasError:          returnedData.hasError,
+                                     errorMessage:      returnedData.errorMessage,
+                                     errorCode:         returnedData.errorCode)
+        let model = CallEventModel(type:        CallEventTypes.CALL_REQUEST,
+                                   request:     res,
+                                   deliver:     nil,
+                                   reject:      nil,
+                                   start:       nil,
+                                   end:         nil,
+                                   connect:     nil,
+                                   reconnect:   nil)
+        Chat.sharedInstance.delegate?.callEvents(model: model)
         
     }
     
@@ -61,10 +69,6 @@ extension Chat {
                                                  hasError:          response.hasError,
                                                  errorMessage:      response.errorMessage,
                                                  errorCode:         response.errorCode)
-                    Chat.sharedInstance.delegate?.callEvents(request70: nil,
-                                                             reject72:  res,
-                                                             deliver73: nil,
-                                                             start74:   nil)
                     success(res)
                 }
                 // response of type 73 (deliver)
@@ -74,10 +78,6 @@ extension Chat {
                                                   hasError:         response.hasError,
                                                   errorMessage:     response.errorMessage,
                                                   errorCode:        response.errorCode)
-                    Chat.sharedInstance.delegate?.callEvents(request70: nil,
-                                                             reject72:  nil,
-                                                             deliver73: res,
-                                                             start74:   nil)
                     success(res)
                 }
                 // response of type 74 (start)
@@ -86,10 +86,6 @@ extension Chat {
                                                 hasError:       response.hasError,
                                                 errorMessage:   response.errorMessage,
                                                 errorCode:      response.errorCode)
-                    Chat.sharedInstance.delegate?.callEvents(request70: nil,
-                                                             reject72:  nil,
-                                                             deliver73: nil,
-                                                             start74:   res)
                     success(res)
                 }
                 

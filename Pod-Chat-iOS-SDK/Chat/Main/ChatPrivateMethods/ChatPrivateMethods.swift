@@ -926,6 +926,26 @@ extension Chat {
             responseOfCallStarted(withMessage: message)
             break
             
+        // a message of type 75 (END_CALL_REQUEST) comes from Server.
+        case ChatMessageVOTypes.END_CALL_REQUEST.intValue():
+            // there is no response as type 75 comes from server!
+            break
+            
+        // a message of type 76 (END_CALL) comes from Server.
+        case ChatMessageVOTypes.END_CALL.intValue():
+            responseOfCallEnded(withMessage: message)
+            break
+            
+        // a message of type 78 (CALL_RECONNECT) comes from Server.
+        case ChatMessageVOTypes.CALL_RECONNECT.intValue():
+            responseOfCallReconnect(withMessage: message)
+            break
+            
+        // a message of type 79 (CALL_CONNECT) comes from Server.
+        case ChatMessageVOTypes.CALL_CONNECT.intValue():
+            responseOfCallConnect(withMessage: message)
+            break
+            
         // a message of type 90 (CONTACT_SYNCED) comes from Server.
         case ChatMessageVOTypes.CONTACT_SYNCED.intValue():
             responseOfUserContactSynced(withMessage: message)

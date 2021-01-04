@@ -33,7 +33,20 @@ extension Chat {
                                           contentCount:     message.contentCount,
                                           subjectId:        message.subjectId)
         
-        // ToDo: send CallDelivery Event
+        let res = DeliverCallResponse(messageContent:   returnData.result!,
+                                      isDelivered:      true,
+                                      hasError:         returnData.hasError,
+                                      errorMessage:     returnData.errorMessage,
+                                      errorCode:        returnData.errorCode)
+        let model = CallEventModel(type:        CallEventTypes.CALL_DELIVERY,
+                                   request:     nil,
+                                   deliver:     res,
+                                   reject:      nil,
+                                   start:       nil,
+                                   end:         nil,
+                                   connect:     nil,
+                                   reconnect:   nil)
+        Chat.sharedInstance.delegate?.callEvents(model: model)
         
         if Chat.callMap[message.uniqueId] != nil {
             let callback: CallbackProtocol = Chat.callMap[message.uniqueId]!.first!

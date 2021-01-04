@@ -32,7 +32,20 @@ extension Chat {
                                           contentCount:     message.contentCount,
                                           subjectId:        message.subjectId)
         
-        // ToDo: send CallRejected Event
+        let res = RejectCallResponse(messageContent:    returnData.result!,
+                                     isRejected:        true,
+                                     hasError:          returnData.hasError,
+                                     errorMessage:      returnData.errorMessage,
+                                     errorCode:         returnData.errorCode)
+        let model = CallEventModel(type:        CallEventTypes.CALL_REJECT,
+                                   request:     nil,
+                                   deliver:     nil,
+                                   reject:      res,
+                                   start:       nil,
+                                   end:         nil,
+                                   connect:     nil,
+                                   reconnect:   nil)
+        Chat.sharedInstance.delegate?.callEvents(model: model)
         
         if Chat.callMap[message.uniqueId] != nil {
             let callback: CallbackProtocol = Chat.callMap[message.uniqueId]!.first!

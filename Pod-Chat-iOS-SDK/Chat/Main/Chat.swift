@@ -556,6 +556,7 @@ public class Chat {
     // Call CallBacks
     public var callRequestCallbackToUser:   callbackTypeAlias?
     public var callAcceptCallbackToUser:    callbackTypeAlias?
+    public var callEndCallbackToUser:       callbackTypeAlias?
     
     
     // MARK: - create Async with the parameters
